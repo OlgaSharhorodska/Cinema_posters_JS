@@ -18,6 +18,36 @@ const elements = {
   loadBtn: document.querySelector(".js-load-more"),
 };
 
+const defaults = {
+  poster: "https://www.reelviews.net/resources/img/default_poster.jpg",
+  date: "XXXX-XX-XX",
+  title: "Title not found",
+  vote: "XX.XX",
+};
+
+let page = 1;
+
+elements.loadBtn.addEventListener("click", handlerLoadMore)
+
+function handlerLoadMore() {
+    page += 1;
+    serviceFilms(page)
+      .then((data) => {
+        elements.conteiner.insertAdjacentHTML(
+          "beforeend",
+          createMarkup(data.results)
+        );
+
+        if (data.page >= data.total_pages) {
+          elements.loadBtn.classList.replace("load-more", "load-more-hidden");
+        }
+      })
+      .catch((err) =>
+        elements.loadBtn.classList.replace("load-more", "load-more-hidden")
+      );
+    
+}
+
 function serviceFilms(currentPage = "1") {
     const params = new URLSearchParams({
         page: currentPage,
@@ -29,7 +59,7 @@ function serviceFilms(currentPage = "1") {
         if (!resp.ok) {
             throw new Error("Error")
         };
-        return resp.json()
+        return resp.json().catch(err => elements.loadBtn.classList.replace("load-more", "load-more-hidden"));
 
     });
 
@@ -54,14 +84,7 @@ serviceFilms().then((data) => {
     if (data.page < data.total_pages) {
         elements.loadBtn.classList.replace("load-more-hidden", "load-more");
     }})
-    .catch(err => console.log(err));
-
-const defaults = {
-  poster: "https://www.reelviews.net/resources/img/default_poster.jpg",
-  date: "XXXX-XX-XX",
-  title: "Title not found",
-  vote: "XX.XX",
-};
+    .catch(err => elements.loadBtn.classList.replace("load-more", "load-more-hidden"));
 
 function createMarkup(arr) {
  return arr.map(
