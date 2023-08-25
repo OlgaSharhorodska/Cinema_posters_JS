@@ -13,3 +13,13 @@
 
 // *********************** Кнопка "Load More" ************************** \\
 
+
+function serviceFilms(currentpagePage = `1`) {
+    const params = new URLSearchParams({
+        page: currentpagePage,
+        api_key:`345007f9ab440e5b86cef51be6397df1`,
+    })
+    return fetch(`https://api.themoviedb.org/3/trending/movie/week?${params}`)
+    
+     // fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=345007f9ab440e5b86cef51be6397df1&page=${page}`)
+}
