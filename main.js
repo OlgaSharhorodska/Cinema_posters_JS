@@ -14,12 +14,19 @@
 // *********************** Кнопка "Load More" ************************** \\
 
 
-function serviceFilms(currentpagePage = `1`) {
+function serviceFilms(currentPage = "1") {
     const params = new URLSearchParams({
-        page: currentpagePage,
+        page: currentPage,
         api_key:`345007f9ab440e5b86cef51be6397df1`,
     })
-    return fetch(`https://api.themoviedb.org/3/trending/movie/week?${params}`)
+    return fetch(`https://api.themoviedb.org/3/trending/movie/week?${params}`).then((resp) => {
+        if (!resp.ok) {
+            throw new Error(resp.statusText)
+        }
+    });
     
      // fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=345007f9ab440e5b86cef51be6397df1&page=${page}`)
 }
+
+serviceFilms(2)
+serviceFilms(31)
