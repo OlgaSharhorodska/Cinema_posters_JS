@@ -1,3 +1,7 @@
+body {
+background-color: #000;
+}
+
 .button-container {
   display: flex;
   justify-content: center;
@@ -48,7 +52,7 @@
 }
 
 .movie-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-20px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
