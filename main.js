@@ -13,6 +13,10 @@
 
 // *********************** Кнопка "Load More" ************************** \\
 
+const elements = {
+  conteiner: document.querySelector(".js-movie-list"),
+};
+
 function serviceFilms(currentPage = "1") {
     const params = new URLSearchParams({
         page: currentPage,
@@ -44,8 +48,34 @@ function serviceFilms(currentPage = "1") {
 //   })
 //   .catch((err) => console.log(err));
 
-serviceFilms().then(data => console.log(data)).catch(err => console.log(err));
+serviceFilms().then((data) => elements.conteiner.insertAdjacentHTML("beforeend", createMarkup(data.results)))
+    .catch(err => console.log(err));
 
+const defaults = {
+  poster: "https://www.reelviews.net/resources/img/default_poster.jpg",
+  date: "XXXX-XX-XX",
+  title: "Title not found",
+  vote: "XX.XX",
+};
+
+function createMarkup(arr) {
+ return arr.map(
+        ({ poster_path, release_date, original_title, vote_average }) => `
+      <li class="movie-card">
+      <img src="${
+        poster_path
+          ? "https://image.tmdb.org/t/p/w300" + poster_path
+          : defaults.poster
+      }" alt="${original_title || defaults.title}">
+      <div class="movie-info">
+          <h2>${original_title || defaults.title}</h2>
+          <p>Release Date: ${release_date || defaults.date}</p>
+          <p>Vote Average: ${vote_average || defaults.vote}</p>
+      </div>
+  </li>`
+      )
+      .join("");
+  }
 
 
 
