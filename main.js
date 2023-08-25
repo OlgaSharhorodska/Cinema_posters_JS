@@ -15,6 +15,7 @@
 
 const elements = {
   conteiner: document.querySelector(".js-movie-list"),
+  loadBtn: document.querySelector(".js-load-more"),
 };
 
 function serviceFilms(currentPage = "1") {
@@ -48,7 +49,11 @@ function serviceFilms(currentPage = "1") {
 //   })
 //   .catch((err) => console.log(err));
 
-serviceFilms().then((data) => elements.conteiner.insertAdjacentHTML("beforeend", createMarkup(data.results)))
+serviceFilms().then((data) => {
+    elements.conteiner.insertAdjacentHTML("beforeend", createMarkup(data.results))
+    if (data.page < data.total_pages) {
+        elements.loadBtn.classList.replace("load-more-hidden", "load-more");
+    }})
     .catch(err => console.log(err));
 
 const defaults = {
