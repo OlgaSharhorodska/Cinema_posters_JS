@@ -13,20 +13,39 @@
 
 // *********************** Кнопка "Load More" ************************** \\
 
-
 function serviceFilms(currentPage = "1") {
     const params = new URLSearchParams({
         page: currentPage,
-        api_key:`345007f9ab440e5b86cef51be6397df1`,
-    })
-    return fetch(`https://api.themoviedb.org/3/trending/movie/week?${params}`).then((resp) => {
-        if (!resp.ok) {
-            throw new Error(resp.statusText)
-        }
+        api_key: `345007f9ab440e5b86cef51be6397df1`,
     });
-    
-     // fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=345007f9ab440e5b86cef51be6397df1&page=${page}`)
+    return fetch(
+        `https://api.themoviedb.org/3/trending/movie/week?${params}`
+    ).then((resp) => {
+        if (!resp.ok) {
+            throw new Error("Error")
+        };
+        return resp.json()
+
+    });
+
+    // fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=345007f9ab440e5b86cef51be6397df1&page=${page}`)
 }
 
-serviceFilms(2)
-serviceFilms(31)
+// Перевірка на виникнення помилки
+
+// serviceFilms(2)
+//   .then((data) => {
+//     console.log(data);
+//     if ("success" in data && !data.success) {
+//       // !data.success => data.success === false
+//       throw new Error(data.status_message);
+//     }
+//     console.log(data);
+//   })
+//   .catch((err) => console.log(err));
+
+serviceFilms().then(data => console.log(data)).catch(err => console.log(err));
+
+
+
+
